@@ -1,1 +1,46 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Plan My Trip — Aswal Tour & Travels</title><link rel="stylesheet" href="styles.css"></head><body><div class="noise"></div><div class="progress"><span id="progress"></span></div><header class="nav darknav" id="nav"><a class="brand" href="index.html"><span class="brand-mark">A</span><span>ASWAL <b>TOUR & TRAVELS</b></span></a><nav><a href="destinations.html">Destinations</a><a href="packages.html">Packages</a><a href="experiences.html">Experiences</a><a href="about.html">Why Aswal</a></nav><a class="nav-cta" href="plan.html">Plan My Trip ↗</a></header><main><section class="plan-wrap"><div class="plan-copy"><span class="eyebrow">05 · PLAN YOUR TRIP</span><h1>Let's make<br>it <em>yours.</em></h1><p>Tell us the basics. We'll use them to start shaping a route that fits you.</p><div class="plan-points"><span>✦ Custom itineraries</span><span>✦ Family & group travel</span><span>✦ Spiritual journeys</span><span>✦ Adventure escapes</span></div></div><form class="big-form" id="tripForm"><label>Name<input required name="name" placeholder="Your name"></label><label>Destination<input required name="destination" placeholder="Where do you want to go?"></label><div class="form-row"><label>Travel date<input name="date" type="date"></label><label>Travellers<input name="travellers" type="number" min="1" value="2"></label></div><label>What kind of trip?<select name="type"><option>Adventure</option><option>Family holiday</option><option>Spiritual journey</option><option>Couples / honeymoon</option><option>Wellness / slow travel</option><option>Custom</option></select></label><label>Anything else? <textarea name="message" rows="4" placeholder="Budget, hotel preference, places you want to include..."></textarea></label><button class="button dark" type="submit">Send travel enquiry <span>→</span></button><p id="formNote" class="form-note">Your enquiry is only a starting point — we'll refine the details with you.</p></form></section><section class="contact-strip"><div><span class="eyebrow">TRAVEL DESK</span><h3>Prefer to talk?</h3></div><div><strong>Call / WhatsApp</strong><p>Aswal Tour & Travels<br><a href="https://wa.me/917983558954" target="_blank" rel="noopener noreferrer">WhatsApp · 79835 58954</a></p></div><div><strong>Hours</strong><p>Mon–Sat<br>9:00 AM – 7:00 PM</p></div></section></main><script src="script.js"></script></body></html>
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Plan My Trip — Aswal Tour & Travels</title><link rel="stylesheet" href="styles.css"></head><body><div class="noise"></div><div class="progress"><span id="progress"></span></div><header class="nav darknav" id="nav"><a class="brand" href="index.html"><span class="brand-mark">A</span><span>ASWAL <b>TOUR & TRAVELS</b></span></a><nav><a href="destinations.html">Destinations</a><a href="packages.html">Packages</a><a href="experiences.html">Experiences</a><a href="about.html">Why Aswal</a></nav><a class="nav-cta" href="plan.html">Plan My Trip ↗</a></header><main><section class="plan-wrap"><div class="plan-copy"><span class="eyebrow">05 · PLAN YOUR TRIP</span><h1>Let's make<br>it <em>yours.</em></h1><p>Tell us the basics. We'll use them to start shaping a route that fits you.</p><div class="plan-points"><span>✦ Custom itineraries</span><span>✦ Family & group travel</span><span>✦ Spiritual journeys</span><span>✦ Adventure escapes</span></div></div><form class="big-form" id="tripForm"><label>Name<input required name="name" placeholder="Your name"></label><label>Destination<input required name="destination" placeholder="Where do you want to go?"></label><div class="form-row"><label>Travel date<input name="date" type="date"></label><label>Travellers<input name="travellers" type="number" min="1" value="2"></label></div><label>What kind of trip?<select name="type"><option>Adventure</option><option>Family holiday</option><option>Spiritual journey</option><option>Couples / honeymoon</option><option>Wellness / slow travel</option><option>Custom</option></select></label><label>Anything else? <textarea name="message" rows="4" placeholder="Budget, hotel preference, places you want to include..."></textarea></label><button class="button dark" type="submit">Send travel enquiry <span>→</span></button><p id="formNote" class="form-note">Your enquiry is only a starting point — we'll refine the details with you.</p></form></section><section class="contact-strip"><div><span class="eyebrow">TRAVEL DESK</span><h3>Prefer to talk?</h3></div><div><strong>Call / WhatsApp</strong><p>Aswal Tour & Travels<br><a href="https://wa.me/917983558954" target="_blank" rel="noopener noreferrer">WhatsApp · 79835 58954</a></p></div><div><strong>Hours</strong><p>Mon–Sat<br>9:00 AM – 7:00 PM</p></div></section></main><script src="script.js"></script>
+
+<!-- Quick-fill helper: remembers locally entered enquiry details and offers one-tap autofill. -->
+<script>
+(() => {
+  const form = document.querySelector('#tripForm');
+  if (!form) return;
+  const fields = ['name','destination','date','travellers','type','message'];
+  const storageKey = 'aswal_trip_details';
+  const saved = (() => { try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch (_) { return null; } })();
+
+  if (saved) {
+    const bar = document.createElement('div');
+    bar.className = 'saved-trip-bar';
+    bar.innerHTML = '<span>Previous enquiry found</span><button type="button">Auto-fill my details</button><button type="button" class="dismiss">×</button>';
+    form.parentNode.insertBefore(bar, form);
+    bar.querySelector('button:not(.dismiss)').addEventListener('click', () => {
+      fields.forEach(name => {
+        const el = form.elements[name];
+        if (el && saved[name] != null) el.value = saved[name];
+      });
+      bar.remove();
+    });
+    bar.querySelector('.dismiss').addEventListener('click', () => bar.remove());
+  }
+
+  fields.forEach(name => {
+    const el = form.elements[name];
+    if (el) el.addEventListener('input', () => {
+      const data = {};
+      fields.forEach(key => { const field=form.elements[key]; if(field) data[key]=field.value; });
+      try { localStorage.setItem(storageKey, JSON.stringify(data)); } catch (_) {}
+    });
+  });
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .saved-trip-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:12px 14px;border:1px solid rgba(7,19,31,.12);border-radius:14px;background:rgba(255,255,255,.72);font:700 10px Manrope;letter-spacing:.04em}
+    .saved-trip-bar span{flex:1;color:#07131f}
+    .saved-trip-bar button{border:1px solid rgba(7,19,31,.16);border-radius:999px;padding:9px 13px;background:#07131f;color:#fff;font:800 9px Manrope;cursor:pointer}
+    .saved-trip-bar .dismiss{background:transparent;color:#07131f;padding:7px 10px}
+  `;
+  document.head.appendChild(style);
+})();
+</script>
+</body></html>
