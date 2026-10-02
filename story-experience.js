@@ -4,11 +4,18 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scenes = [
-    {kicker:'01 · UTTARAKHAND', title:'Begin where<br><em>mountains breathe.</em>', desc:'Rishikesh · Mussoorie · Haridwar · Nainital. Start high, follow the river, and let the Himalayas set the pace.', place:'RISHIKESH', region:'30.1° N · 78.3° E', side:'RIVER · MOUNTAIN · STILLNESS'},
-    {kicker:'02 · RAJASTHAN', title:'Walk into<br><em>royal light.</em>', desc:'Jaipur · Udaipur · Jodhpur · Jaisalmer. Fort walls, blue streets and a desert that glows after sunset.', place:'JAISALMER', region:'26.9° N · 70.9° E', side:'FORT · DESERT · HERITAGE'},
-    {kicker:'03 · UTTAR PRADESH', title:'Follow the<br><em>river of stories.</em>', desc:'Varanasi · Ayodhya · Mathura · Agra. Ancient lanes, river light and living culture woven into every turn.', place:'VARANASI', region:'25.3° N · 83.0° E', side:'GANGA · CULTURE · FAITH'},
-    {kicker:'04 · KERALA', title:'Let the<br><em>water slow you.</em>', desc:'Kochi · Munnar · Thekkady · Alappuzha. Tea hills, wildlife, houseboats and warm coastal evenings.', place:'ALLEPPEY', region:'9.5° N · 76.3° E', side:'TEA · WATER · WELLNESS'},
-    {kicker:'05 · GOA', title:'End with<br><em>the sea.</em>', desc:'Panaji · Vagator · Calangute · Palolem. Beach roads, old Goa and sunsets without a clock.', place:'PALOLEM', region:'15.0° N · 74.0° E', side:'SEA · SUNSET · FREEDOM'}
+    {kicker:'01 · JAMMU & KASHMIR', title:'Where the<br><em>mountains begin.</em>', desc:'Srinagar · Gulmarg · Pahalgam. Lakes, meadows and Himalayan roads opening into the north.', place:'SRINAGAR', region:'34.1° N · 74.8° E', side:'LAKE · VALLEY · HIMALAYA'},
+    {kicker:'02 · HIMACHAL PRADESH', title:'Chase the<br><em>mountain light.</em>', desc:'Manali · Shimla · Kasol. Pine forests, high passes and slow mornings above the clouds.', place:'MANALI', region:'32.2° N · 77.2° E', side:'PINE · PASS · CLOUD'},
+    {kicker:'03 · UTTARAKHAND', title:'Begin where<br><em>mountains breathe.</em>', desc:'Rishikesh · Mussoorie · Haridwar · Nainital. Rivers, ghats and Himalayan escapes.', place:'RISHIKESH', region:'30.1° N · 78.3° E', side:'RIVER · MOUNTAIN · STILLNESS'},
+    {kicker:'04 · RAJASTHAN', title:'Walk into<br><em>royal light.</em>', desc:'Jaipur · Udaipur · Jodhpur · Jaisalmer. Fort walls, blue streets and desert sunsets.', place:'JAISALMER', region:'26.9° N · 70.9° E', side:'FORT · DESERT · HERITAGE'},
+    {kicker:'05 · DELHI', title:'Meet the<br><em>city of stories.</em>', desc:'Old Delhi · India Gate · Humayun’s Tomb. History, food and a capital that never stops moving.', place:'NEW DELHI', region:'28.6° N · 77.2° E', side:'HISTORY · FOOD · CAPITAL'},
+    {kicker:'06 · UTTAR PRADESH', title:'Follow the<br><em>river of stories.</em>', desc:'Agra · Mathura · Ayodhya · Varanasi. Architecture, devotion and the timeless Ganga.', place:'VARANASI', region:'25.3° N · 83.0° E', side:'GANGA · CULTURE · FAITH'},
+    {kicker:'07 · GOA', title:'Let the<br><em>coast take over.</em>', desc:'Panaji · Vagator · Calangute · Palolem. Beach roads, old Goa and sunsets without a clock.', place:'PALOLEM', region:'15.0° N · 74.0° E', side:'SEA · SUNSET · FREEDOM'},
+    {kicker:'08 · KERALA', title:'Let the<br><em>water slow you.</em>', desc:'Kochi · Munnar · Thekkady · Alappuzha. Tea hills, wildlife and houseboats.', place:'ALLEPPEY', region:'9.5° N · 76.3° E', side:'TEA · WATER · WELLNESS'},
+    {kicker:'09 · TAMIL NADU', title:'Follow the<br><em>temple horizon.</em>', desc:'Chennai · Madurai · Ooty · Rameswaram. Sacred architecture, hills and southern coastlines.', place:'MADURAI', region:'9.9° N · 78.1° E', side:'TEMPLES · HILLS · COAST'},
+    {kicker:'10 · KARNATAKA', title:'Find the<br><em>road less expected.</em>', desc:'Bengaluru · Coorg · Hampi · Mysuru. Coffee estates, royal history and ancient stone.', place:'HAMPI', region:'15.3° N · 76.5° E', side:'COFFEE · RUINS · ROYALTY'},
+    {kicker:'11 · SIKKIM', title:'Higher into<br><em>the quiet.</em>', desc:'Gangtok · Pelling · Lachung. Monasteries, mountain roads and views toward Kanchenjunga.', place:'GANGTOK', region:'27.3° N · 88.6° E', side:'MONASTERY · PEAK · MIST'},
+    {kicker:'12 · ASSAM', title:'End where<br><em>the wild begins.</em>', desc:'Guwahati · Kaziranga · Majuli. River islands, tea country and the call of the wild.', place:'KAZIRANGA', region:'26.6° N · 93.2° E', side:'WILDLIFE · TEA · RIVER'}
   ];
 
   const $ = s => root.querySelector(s);
@@ -43,7 +50,7 @@
     active = index;
 
     tabs.forEach((tab,i)=>tab.classList.toggle('is-active',i===index));
-    counter.textContent = String(index+1).padStart(2,'0') + ' / 05';
+    counter.textContent = String(index+1).padStart(2,'0') + ' / ' + String(scenes.length).padStart(2,'0');
 
     if(!window.gsap || !animate || reduceMotion){
       kicker.textContent=s.kicker; title.innerHTML=s.title; desc.textContent=s.desc;
@@ -155,7 +162,7 @@
     window.addEventListener('scroll',()=>{
       const r=root.getBoundingClientRect();
       const p=Math.max(0,Math.min(1,-r.top/Math.max(1,r.height-innerHeight)));
-      const scene=Math.min(4,Math.floor(p*5));
+      const scene=Math.min(scenes.length-1,Math.floor(p*scenes.length));
       if(scene!==active) setCopy(scene,false);
       progress.style.transform='scaleX('+p+')';
     },{passive:true});
