@@ -222,3 +222,32 @@ body.page-leaving{opacity:0}
 @media(prefers-reduced-motion:reduce){
   .journey-chapter{transition:none}
 }
+
+/* INDIA ATLAS — state, city, landmark and package benchmark layer */
+.india-atlas{background:#f5f2eb}
+.india-atlas .section-head h2 em{font:400 .92em Georgia}
+.atlas-filters{display:flex;gap:8px;flex-wrap:wrap;margin:35px 0 28px}
+.atlas-filter{border:1px solid #0b172033;background:transparent;padding:11px 15px;border-radius:999px;font:700 9px Manrope;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:.35s ease}
+.atlas-filter:hover,.atlas-filter.active{background:#07131f;color:#fff;border-color:#07131f;transform:translateY(-2px)}
+.atlas-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #0b17201c;border-left:1px solid #0b17201c}
+.atlas-card{min-height:285px;padding:28px;border-right:1px solid #0b17201c;border-bottom:1px solid #0b17201c;position:relative;background:#f8f6f0;transition:transform .6s cubic-bezier(.16,1,.3,1),background .4s ease}
+.atlas-card:hover{transform:translateY(-7px);background:#fff}
+.atlas-card[hidden]{display:none}
+.atlas-index{font:700 9px Manrope;letter-spacing:.18em;color:#8b918f;margin-bottom:42px}
+.atlas-region{font:700 8px Manrope;letter-spacing:.2em;text-transform:uppercase;color:#e8793f}
+.atlas-main h3{font:800 clamp(27px,2.6vw,38px)/1 Manrope;letter-spacing:-.055em;margin:9px 0 12px;color:#07131f}
+.atlas-main p{font-size:12px;line-height:1.65;color:#59646a;margin:0 0 8px;max-width:330px}
+.atlas-cities{font-weight:700;color:#18252c!important}
+.atlas-bottom{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-top:25px;padding-top:14px;border-top:1px solid #0b17201c}
+.atlas-bottom strong{font:800 18px Manrope;letter-spacing:-.04em;color:#07131f;white-space:nowrap}
+.atlas-bottom small{font:500 9px DM Sans;color:#7d8588}
+.atlas-bottom span{font:700 8px/1.4 Manrope;letter-spacing:.08em;text-transform:uppercase;color:#e8793f;text-align:right}
+.atlas-note{margin:22px 0 0;font-size:11px;line-height:1.7;color:#737a7d;max-width:850px}
+@media(max-width:900px){.atlas-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){
+ .atlas-grid{grid-template-columns:1fr}
+ .atlas-card{min-height:250px;padding:24px}
+ .atlas-index{margin-bottom:30px}
+ .atlas-bottom{align-items:flex-start;flex-direction:column}
+ .atlas-bottom span{text-align:left}
+}
