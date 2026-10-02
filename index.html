@@ -59,6 +59,18 @@
       <div class="story-scene" data-scene="10" style="--image:url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2400&q=90')"></div>
       <div class="story-scene" data-scene="11" style="--image:url('https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=2400&q=90')"></div>
     </div>
+      <div class="story-scene" data-scene="1" style="--image:url('https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="2" style="--image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="3" style="--image:url('https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="4" style="--image:url('https://images.unsplash.com/photo-1532664189809-02133fee698d?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="5" style="--image:url('https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="6" style="--image:url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="7" style="--image:url('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="8" style="--image:url('https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="9" style="--image:url('https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="10" style="--image:url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2400&q=90')"></div>
+      <div class="story-scene" data-scene="11" style="--image:url('https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=2400&q=90')"></div>
+    </div>
       <div class="story-scene" data-scene="1" style="--image:url('https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=2400&q=90')"></div>
       <div class="story-scene" data-scene="2" style="--image:url('https://images.unsplash.com/photo-1532664189809-02133fee698d?auto=format&fit=crop&w=2400&q=90')"></div>
       <div class="story-scene" data-scene="3" style="--image:url('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=2400&q=90')"></div>
@@ -97,18 +109,11 @@
     <div class="story-bottom">
       <div class="story-progress"><span id="storyProgress"></span></div><div class="story-price-note">*Indicative starting package benchmarks · final quote depends on dates, hotel, transport & inclusions.</div>
       <div class="story-rail" id="storyRail">
-        <button class="story-tab is-active" data-scene="0"><span>01</span><b>Jammu & Kashmir</b><small>Srinagar · From ₹14,999*</small></button>
-        <button class="story-tab" data-scene="1"><span>02</span><b>Himachal</b><small>Manali · From ₹9,999*</small></button>
-        <button class="story-tab" data-scene="2"><span>03</span><b>Uttarakhand</b><small>Rishikesh · From ₹8,000*</small></button>
-        <button class="story-tab" data-scene="3"><span>04</span><b>Rajasthan</b><small>Jaisalmer · From ₹5,000*</small></button>
-        <button class="story-tab" data-scene="4"><span>05</span><b>Delhi</b><small>New Delhi · From ₹7,999*</small></button>
-        <button class="story-tab" data-scene="5"><span>06</span><b>Uttar Pradesh</b><small>Varanasi · From ₹10,999*</small></button>
-        <button class="story-tab" data-scene="6"><span>07</span><b>Goa</b><small>Palolem · From ₹8,999*</small></button>
-        <button class="story-tab" data-scene="7"><span>08</span><b>Kerala</b><small>Alleppey · From ₹15,000*</small></button>
-        <button class="story-tab" data-scene="8"><span>09</span><b>Tamil Nadu</b><small>Madurai · From ₹12,999*</small></button>
-        <button class="story-tab" data-scene="9"><span>10</span><b>Karnataka</b><small>Hampi · From ₹11,999*</small></button>
-        <button class="story-tab" data-scene="10"><span>11</span><b>Sikkim</b><small>Gangtok · From ₹13,999*</small></button>
-        <button class="story-tab" data-scene="11"><span>12</span><b>Assam</b><small>Kaziranga · From ₹14,999*</small></button>
+        <button class="story-nav" id="storyPrev" type="button" aria-label="Previous city">←</button>
+        <div class="story-current"><span id="storyRailNumber">01</span><strong id="storyRailCity">Srinagar</strong><small id="storyRailPrice">From ₹14,999*</small></div>
+        <div class="story-dots" id="storyDots" aria-label="Choose a city"></div>
+        <div class="story-current story-next"><span id="storyRailNextNumber">02</span><strong id="storyRailNext">Manali</strong><small>Next city</small></div>
+        <button class="story-nav" id="storyNext" type="button" aria-label="Next city">→</button>
       </div>
     </div>
 
