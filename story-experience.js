@@ -1,8 +1,7 @@
 (() => {
-  const root = document.querySelector('#storyJourney');
-  if (!root) return;
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root=document.querySelector('#storyJourney');
+  if(!root) return;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scenes = [
     {kicker:'01 · JAMMU & KASHMIR', title:'Where the<br><em>mountains begin.</em>', desc:'Srinagar · Gulmarg · Pahalgam. Lakes, meadows and Himalayan roads opening into the north.', place:'SRINAGAR', region:'34.1° N · 74.8° E', side:'LAKE · VALLEY · HIMALAYA', price:'From ₹14,999*'},
     {kicker:'02 · HIMACHAL PRADESH', title:'Chase the<br><em>mountain light.</em>', desc:'Manali · Shimla · Kasol. Pine forests, high passes and slow mornings above the clouds.', place:'MANALI', region:'32.2° N · 77.2° E', side:'PINE · PASS · CLOUD', price:'From ₹9,999*'},
@@ -18,113 +17,139 @@
     {kicker:'12 · ASSAM', title:'End where<br><em>the wild begins.</em>', desc:'Guwahati · Kaziranga · Majuli. River islands, tea country and the call of the wild.', place:'KAZIRANGA', region:'26.6° N · 93.2° E', side:'WILDLIFE · TEA · RIVER', price:'From ₹14,999*'}
   ];
 
-  const $ = s => root.querySelector(s);
-  const $$ = s => [...root.querySelectorAll(s)];
-  const stage = $('.story-stage');
-  const media = $$('.story-scene');
-  const tabs = [];
-  const railNumber = $('#storyRailNumber');
-  const railCity = $('#storyRailCity');
-  const railPrice = $('#storyRailPrice');
-  const railNextNumber = $('#storyRailNextNumber');
-  const railNext = $('#storyRailNext');
-  const dots = $('#storyDots');
-  const prev = $('#storyPrev');
-  const next = $('#storyNext');
-  let active = 0;
 
-  scenes.forEach((s,i)=>{
+  const $=s=>root.querySelector(s), $$=s=>[...root.querySelectorAll(s)];
+  const stage=$('.story-stage'), media=$$('.story-scene');
+  const kicker=$('#storyKicker'), title=$('#storyTitle'), desc=$('#storyDescription');
+  const place=$('#storyPlace'), region=$('#storyRegion'), side=$('#storySide');
+  const counter=$('#storyCounter'), progress=$('#storyProgress'), destination=$('#storyDestination');
+  const route=$('.story-route-progress'), cursor=$('#storyCursor');
+  const railNumber=$('#storyRailNumber'), railCity=$('#storyRailCity'), railPrice=$('#storyRailPrice');
+  const railNextNumber=$('#storyRailNextNumber'), railNext=$('#storyRailNext');
+  const dots=$('#storyDots'), prev=$('#storyPrev'), next=$('#storyNext');
+  let active=0, ticking=false;
+
+  // Build exactly one compact city selector. Twelve cities remain available without
+  // filling the screen with twelve cards.
+  const tabs=scenes.map((s,i)=>{
     const dot=document.createElement('button');
     dot.type='button'; dot.className='story-dot'+(i===0?' is-active':'');
-    dot.dataset.scene=i; dot.setAttribute('aria-label','Go to '+s.place);
-    dots?.appendChild(dot); tabs.push(dot);
+    dot.setAttribute('aria-label','Go to '+s.place);
+    dot.addEventListener('click',()=>jumpToScene(i));
+    dots?.appendChild(dot);
+    return dot;
   });
 
   function refreshRail(index){
-    const s=scenes[index];
-    const n=scenes[(index+1)%scenes.length];
+    const s=scenes[index], n=scenes[Math.min(index+1,scenes.length-1)];
     railNumber.textContent=String(index+1).padStart(2,'0');
     railCity.textContent=s.place;
-    railPrice.textContent=s.price || 'Custom quote';
-    railNextNumber.textContent=String((index+1)%scenes.length+1).padStart(2,'0');
+    railPrice.textContent=s.price||'Custom quote';
+    railNextNumber.textContent=String(Math.min(index+1,scenes.length-1)+1).padStart(2,'0');
     railNext.textContent=n.place;
-    tabs.forEach((dot,i)=>dot.classList.toggle('is-active',i===index));
+    tabs.forEach((d,i)=>d.classList.toggle('is-active',i===index));
     if(prev) prev.disabled=index===0;
     if(next) next.disabled=index===scenes.length-1;
   }
 
-  // Pointer-driven depth: the image, orbit and pin subtly follow the visitor.
-  if(!reduceMotion){
-    stage.addEventListener('pointermove',e=>{
-      const r=stage.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.width-.5;
-      const y=(e.clientY-r.top)/r.height-.5;
-      gsap.to(media,{x:x*18,y:y*12,duration:.7,ease:'power3.out',overwrite:true});
-      gsap.to('.story-orbit-a',{x:x*-28,y:y*-18,duration:1.2,ease:'power3.out',overwrite:true});
-      gsap.to('.story-orbit-b',{x:x*22,y:y*14,duration:1,ease:'power3.out',overwrite:true});
-      gsap.to(destination,{x:x*22,y:y*15,duration:.7,ease:'power3.out',overwrite:true});
-      if(cursor){
-        cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px';
-      }
-    });
-    stage.addEventListener('pointerleave',()=>{
-      gsap.to(media,{x:0,y:0,duration:1,ease:'power3.out'});
-      gsap.to('.story-orbit-a,.story-orbit-b,.story-destination',{x:0,y:0,duration:1,ease:'power3.out'});
-    });
+  function setCopy(index,animate=true){
+    index=Math.max(0,Math.min(scenes.length-1,index));
+    const s=scenes[index];
+    if(index===active && kicker.textContent===s.kicker) return;
+    active=index;
+    refreshRail(index);
+    counter.textContent=String(index+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');
 
-    // Swipe/drag interaction: drag horizontally to move between story chapters.
-    let downX=0,downY=0,dragging=false;
-    stage.addEventListener('pointerdown',e=>{
-      if(e.target.closest('a,button')) return;
-      downX=e.clientX; downY=e.clientY; dragging=true;
-      stage.setPointerCapture?.(e.pointerId);
-    });
-    stage.addEventListener('pointerup',e=>{
-      if(!dragging) return;
-      dragging=false;
-      const dx=e.clientX-downX,dy=e.clientY-downY;
-      if(Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*1.15){
-        jumpToScene(active+(dx<0?1:-1));
+    if(!window.gsap || !animate || reduceMotion){
+      kicker.textContent=s.kicker; title.innerHTML=s.title; desc.textContent=s.desc;
+      place.textContent=s.place; region.textContent=s.region; side.textContent=s.side;
+      media.forEach((m,i)=>{m.classList.toggle('is-active',i===index);m.style.zIndex=i===index?'2':'0';});
+      return;
+    }
+
+    const textEls=[kicker,title,desc,place,region,side];
+    gsap.killTweensOf(textEls);
+    gsap.to(textEls,{autoAlpha:0,y:14,duration:.16,stagger:.015,ease:'power2.in',onComplete:()=>{
+      kicker.textContent=s.kicker; title.innerHTML=s.title; desc.textContent=s.desc;
+      place.textContent=s.place; region.textContent=s.region; side.textContent=s.side;
+      gsap.fromTo(textEls,{autoAlpha:0,y:14},{autoAlpha:1,y:0,duration:.42,stagger:.025,ease:'power3.out'});
+    }});
+    media.forEach((m,i)=>{
+      gsap.killTweensOf(m);
+      if(i===index){
+        gsap.set(m,{zIndex:2});
+        gsap.fromTo(m,{opacity:0,scale:1.1,clipPath:'inset(0 0 100% 0)'},{opacity:1,scale:1.03,clipPath:'inset(0)',duration:.62,ease:'power3.inOut'});
+      }else{
+        gsap.to(m,{opacity:0,scale:1.06,duration:.42,ease:'power2.out'});
+        m.classList.remove('is-active');
       }
     });
-    stage.addEventListener('pointercancel',()=>dragging=false);
+    destination && gsap.fromTo(destination,{scale:.78},{scale:1,duration:.5,ease:'back.out(1.8)'});
   }
 
-  // Lightweight, reliable scroll chapter controller. Every scroll segment owns one city.
-  // GSAP is still used for visual transitions, but city selection does not depend on ScrollTrigger.
-  let ticking=false;
+  function jumpToScene(index){
+    index=Math.max(0,Math.min(scenes.length-1,index));
+    const top=root.getBoundingClientRect().top+window.scrollY;
+    const max=Math.max(1,root.offsetHeight-window.innerHeight);
+    const target=top+max*(index/(scenes.length-1));
+    window.scrollTo({top:target,behavior:reduceMotion?'auto':'smooth'});
+  }
+
+  prev?.addEventListener('click',()=>jumpToScene(active-1));
+  next?.addEventListener('click',()=>jumpToScene(active+1));
+  refreshRail(0);
+
+  // Scroll itself is the chapter controller. Each city owns an equal, short segment.
   function updateJourney(){
     const r=root.getBoundingClientRect();
     const max=Math.max(1,root.offsetHeight-window.innerHeight);
     const p=Math.max(0,Math.min(1,-r.top/max));
     const scaled=p*(scenes.length-1);
-    const scene=Math.min(scenes.length-1,Math.floor(scaled+0.00001));
+    const scene=Math.min(scenes.length-1,Math.floor(scaled+1e-5));
     progress.style.transform='scaleX('+p+')';
     if(route) route.style.strokeDashoffset=String(1400*(1-p));
     if(scene!==active) setCopy(scene,true);
-    const pathPoint=92+(818*p);
-    destination.style.left='calc('+Math.min(91,Math.max(9,pathPoint/10))+'%)';
-    destination.style.top=(38+Math.sin(p*Math.PI*2)*10)+'%';
-    if(scene===scenes.length-1 && scaled-scene>.8) destination.style.opacity=.75;
-    else destination.style.opacity=1;
+    if(destination){
+      destination.style.left='calc('+Math.min(91,Math.max(9,(92+818*p)/10))+'%)';
+      destination.style.top=(38+Math.sin(p*Math.PI*2)*10)+'%';
+    }
     ticking=false;
   }
   function requestJourneyUpdate(){
-    if(!ticking){ ticking=true; requestAnimationFrame(updateJourney); }
+    if(!ticking){ticking=true;requestAnimationFrame(updateJourney);}
   }
   window.addEventListener('scroll',requestJourneyUpdate,{passive:true});
   window.addEventListener('resize',requestJourneyUpdate,{passive:true});
   requestJourneyUpdate();
 
+  if(!reduceMotion && stage && window.gsap){
+    stage.addEventListener('pointermove',e=>{
+      const r=stage.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      gsap.to(media,{x:x*14,y:y*9,duration:.65,ease:'power3.out',overwrite:true});
+      gsap.to('.story-orbit-a',{x:x*-24,y:y*-15,duration:1,ease:'power3.out',overwrite:true});
+      gsap.to('.story-orbit-b',{x:x*18,y:y*12,duration:.9,ease:'power3.out',overwrite:true});
+      if(cursor){cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';}
+    });
+    stage.addEventListener('pointerleave',()=>{
+      gsap.to(media,{x:0,y:0,duration:.8,ease:'power3.out'});
+      gsap.to('.story-orbit-a,.story-orbit-b',{x:0,y:0,duration:.8,ease:'power3.out'});
+    });
+    let downX=0,downY=0,dragging=false;
+    stage.addEventListener('pointerdown',e=>{if(e.target.closest('a,button'))return;downX=e.clientX;downY=e.clientY;dragging=true;stage.setPointerCapture?.(e.pointerId);});
+    stage.addEventListener('pointerup',e=>{
+      if(!dragging)return; dragging=false;
+      const dx=e.clientX-downX,dy=e.clientY-downY;
+      if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.15) jumpToScene(active+(dx<0?1:-1));
+    });
+    stage.addEventListener('pointercancel',()=>dragging=false);
+  }
+
   $('#storyExplore')?.addEventListener('click',()=>{
-    const detail=document.createElement('div');
-    detail.className='story-detail-pop';
-    detail.innerHTML='<span>'+scenes[active].kicker+'</span><strong>'+scenes[active].place+'</strong><p>Move your pointer to shape the scene. Drag left or right to travel between chapters. Scroll to direct the full story.</p><button type="button">Close</button>';
-    const detailStyle=document.createElement('style');
-    detailStyle.textContent='.story-detail-pop{position:fixed;z-index:300;right:5vw;top:50%;width:min(330px,82vw);padding:25px;background:rgba(4,13,20,.88);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(22px);color:#fff;transform:translateY(-50%);box-shadow:0 25px 80px rgba(0,0,0,.4)}.story-detail-pop span{font:800 8px Manrope;letter-spacing:.2em;color:#e8793f}.story-detail-pop strong{display:block;font:800 30px Manrope;margin:12px 0}.story-detail-pop p{font:12px/1.7 "DM Sans";color:#c5d0d5}.story-detail-pop button{border:0;border-radius:99px;padding:9px 14px;font:800 9px Manrope;cursor:pointer}.story-detail-pop button{margin-top:6px}';
-    document.head.appendChild(detailStyle);
-    document.body.appendChild(detail);
-    window.gsap?.fromTo(detail,{autoAlpha:0,x:25},{autoAlpha:1,x:0,duration:.45,ease:'power3.out'});
-    detail.querySelector('button').addEventListener('click',()=>{detail.remove();detailStyle.remove()});
+    const detail=document.createElement('div'); detail.className='story-detail-pop';
+    detail.innerHTML='<span>'+scenes[active].kicker+'</span><strong>'+scenes[active].place+'</strong><p>Scroll to move one city at a time. Use the arrows or dots to jump directly to a city.</p><button type="button">Close</button>';
+    const st=document.createElement('style'); st.textContent='.story-detail-pop{position:fixed;z-index:300;right:5vw;top:50%;width:min(330px,82vw);padding:25px;background:rgba(4,13,20,.9);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(22px);color:#fff;transform:translateY(-50%);box-shadow:0 25px 80px rgba(0,0,0,.4)}.story-detail-pop span{font:800 8px Manrope;letter-spacing:.2em;color:#e8793f}.story-detail-pop strong{display:block;font:800 30px Manrope;margin:12px 0}.story-detail-pop p{font:12px/1.7 "DM Sans";color:#c5d0d5}.story-detail-pop button{border:0;border-radius:99px;padding:9px 14px;font:800 9px Manrope;cursor:pointer;margin-top:6px}';
+    document.head.appendChild(st);document.body.appendChild(detail);
+    window.gsap?.fromTo(detail,{autoAlpha:0,x:25},{autoAlpha:1,x:0,duration:.35,ease:'power3.out'});
+    detail.querySelector('button').addEventListener('click',()=>{detail.remove();st.remove();});
   });
 })();
