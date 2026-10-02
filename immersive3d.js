@@ -1,137 +1,41 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
-
-const mount = document.getElementById('immersive3dStage');
-if (!mount) throw new Error('3D mount not found');
-
-const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x07131f, 0.035);
-
-const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
-camera.position.set(0, 2.8, 9.5);
-
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
-renderer.setSize(mount.clientWidth, mount.clientHeight);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-mount.appendChild(renderer.domElement);
-
-scene.add(new THREE.HemisphereLight(0x9ec7df, 0x08111a, 2.2));
-const sun = new THREE.DirectionalLight(0xffdfbd, 3.2);
-sun.position.set(-4, 8, 5);
-scene.add(sun);
-
-const world = new THREE.Group();
-scene.add(world);
-
-function mountain(x, y, z, scale, color) {
-  const geometry = new THREE.ConeGeometry(1.25, 2.8, 7, 3);
-  const material = new THREE.MeshStandardMaterial({ color, roughness: .92, metalness: .02, flatShading: true });
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.set(x, y, z);
-  mesh.scale.set(scale, scale * (0.8 + Math.random() * .35), scale);
-  mesh.rotation.y = Math.random() * Math.PI;
-  world.add(mesh);
-  return mesh;
+(() => {
+const mount=document.getElementById('immersive3dStage');
+if(!mount)return;
+const canvas=document.createElement('canvas');
+canvas.className='travel-canvas';
+mount.appendChild(canvas);
+const ctx=canvas.getContext('2d');
+let w=0,h=0,dpr=1,t=0,mx=0,my=0,tx=0,ty=0,drag=false,lastX=0,lastY=0;
+const stars=Array.from({length:170},()=>({x:Math.random(),y:Math.random()*.68,z:Math.random(),s:Math.random()*1.8+.3}));
+function resize(){dpr=Math.min(devicePixelRatio||1,2);w=mount.clientWidth;h=mount.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+function hill(points,base,amp,depth,shift){
+ const p=[];
+ for(let i=0;i<=points;i++){const x=i/points*w*1.25-w*.12;const n=Math.sin(i*.75+shift)*.25+Math.sin(i*.31+shift*1.7)*.45+Math.sin(i*.13)*.3;p.push([x,base-n*amp-(i%3===0?amp*.12:0)])}
+ ctx.beginPath();ctx.moveTo(0,h);p.forEach(a=>ctx.lineTo(a[0],a[1]));ctx.lineTo(w,h);ctx.closePath();ctx.fill();
 }
-
-const mountains = [
-  mountain(-5,-1.0,-2,2.8,0x163449),
-  mountain(-3,-.9,-.8,2.2,0x20445a),
-  mountain(-1,-1.1,-2.2,3.5,0x102b3e),
-  mountain(1.8,-1.0,-1.2,2.7,0x1a3a4e),
-  mountain(4,-1.1,-2.4,3.3,0x0d2637),
-  mountain(6,-1.0,-.5,2.1,0x17364a),
-  mountain(-7,-1.1,-4,2.4,0x0b2232),
-  mountain(7,-1.1,-4,2.8,0x0a1e2d)
-];
-
-const snow = new THREE.Group();
-world.add(snow);
-mountains.slice(0,6).forEach((m, idx) => {
-  const g = new THREE.ConeGeometry(.46, .78, 7, 1);
-  const mat = new THREE.MeshStandardMaterial({color:0xe8f0f1, roughness:1});
-  const cap = new THREE.Mesh(g,mat);
-  cap.position.copy(m.position);
-  cap.position.y += m.scale.y * .88;
-  cap.scale.setScalar(m.scale.x * .9);
-  cap.rotation.y = m.rotation.y;
-  snow.add(cap);
-});
-
-const riverGeo = new THREE.PlaneGeometry(5.5, 22, 1, 18);
-const riverMat = new THREE.MeshStandardMaterial({color:0x1f6683,roughness:.22,metalness:.15,transparent:true,opacity:.82});
-const river = new THREE.Mesh(riverGeo,riverMat);
-river.rotation.x=-Math.PI/2;
-river.position.set(.8,-1.28,-3);
-river.rotation.z=.22;
-world.add(river);
-
-const stars = new THREE.BufferGeometry();
-const points=[];
-for(let i=0;i<420;i++) points.push((Math.random()-.5)*25, Math.random()*10-1, (Math.random()-.5)*18-5);
-stars.setAttribute('position',new THREE.Float32BufferAttribute(points,3));
-const starMat=new THREE.PointsMaterial({color:0xcfe7f2,size:.025,transparent:true,opacity:.65});
-scene.add(new THREE.Points(stars,starMat));
-
-const ring = new THREE.Mesh(
-  new THREE.TorusGeometry(1.1,.008,8,80),
-  new THREE.MeshBasicMaterial({color:0xe8793f,transparent:true,opacity:.8})
-);
-ring.position.set(1.7,1.1,.1);
-ring.rotation.x=.8;
-world.add(ring);
-
-const pin = new THREE.Mesh(
-  new THREE.SphereGeometry(.055,16,16),
-  new THREE.MeshBasicMaterial({color:0xe8793f})
-);
-pin.position.set(1.7,1.1,.1);
-world.add(pin);
-
-let targetX=0, targetY=0, currentX=0, currentY=0;
-let dragging=false, lastX=0, lastY=0;
-
-const pointer = (x,y) => {
-  const r=mount.getBoundingClientRect();
-  targetX=((x-r.left)/r.width-.5)*2;
-  targetY=((y-r.top)/r.height-.5)*2;
-};
-mount.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;mount.setPointerCapture(e.pointerId)});
-mount.addEventListener('pointermove',e=>{
-  pointer(e.clientX,e.clientY);
-  if(dragging){
-    targetX += (e.clientX-lastX)*.0025;
-    targetY += (e.clientY-lastY)*.0015;
-    lastX=e.clientX; lastY=e.clientY;
-  }
-});
-mount.addEventListener('pointerup',()=>dragging=false);
-mount.addEventListener('pointercancel',()=>dragging=false);
-
-function resize(){
-  const w=mount.clientWidth,h=mount.clientHeight;
-  camera.aspect=w/h;
-  camera.updateProjectionMatrix();
-  renderer.setSize(w,h);
+function draw(){
+ t+=.012;mx+=(tx-mx)*.045;my+=(ty-my)*.045;
+ const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#061321');g.addColorStop(.48,'#0b2435');g.addColorStop(1,'#02070d');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ const glow=ctx.createRadialGradient(w*.62,h*.35,0,w*.62,h*.35,w*.55);glow.addColorStop(0,'rgba(71,144,182,.26)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
+ stars.forEach(s=>{let x=s.x*w+(mx*18*s.z);let y=s.y*h+(my*8*s.z);if(x<0)x+=w;if(x>w)x-=w;ctx.globalAlpha=.25+s.z*.6;ctx.fillStyle='#d8edf5';ctx.beginPath();ctx.arc(x,y,s.s,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
+ ctx.save();ctx.translate(mx*22,my*7);
+ ctx.fillStyle='#0b2232';hill(22,h*.69,105,1,t*.2);
+ ctx.fillStyle='#12364a';hill(24,h*.75,125,1,t*.17+1);
+ ctx.fillStyle='#1b4a61';hill(26,h*.82,105,1,t*.13+2);
+ ctx.restore();
+ // snow caps
+ ctx.save();ctx.translate(mx*10,my*4);ctx.fillStyle='rgba(232,241,242,.82)';
+ for(let i=0;i<7;i++){const x=w*(.07+i*.145);const y=h*(.59-(i%2)*.035);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+30,y+42);ctx.lineTo(x+60,y);ctx.lineTo(x+48,y+9);ctx.lineTo(x+30,y-18);ctx.closePath();ctx.fill()}ctx.restore();
+ // river
+ ctx.save();ctx.translate(w*.57+mx*13,0);ctx.rotate(-.08);const rg=ctx.createLinearGradient(0,h*.58,0,h);rg.addColorStop(0,'rgba(52,148,183,.1)');rg.addColorStop(.55,'rgba(35,113,146,.7)');rg.addColorStop(1,'rgba(16,55,76,.95)');ctx.fillStyle=rg;ctx.beginPath();ctx.moveTo(-55,h);ctx.quadraticCurveTo(10,h*.75,28,h*.56);ctx.quadraticCurveTo(75,h*.78,130,h);ctx.closePath();ctx.fill();
+ for(let i=0;i<7;i++){ctx.strokeStyle='rgba(150,225,238,.18)';ctx.beginPath();ctx.moveTo(-25+i*16,h*.7+i*24);ctx.lineTo(65+i*9,h*.69+i*24);ctx.stroke()}ctx.restore();
+ // floating destination pin
+ const px=w*.67+mx*25,py=h*.38+my*10;ctx.strokeStyle='rgba(232,121,63,.8)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(px,py,25+Math.sin(t*2)*5,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#e8793f';ctx.shadowBlur=18;ctx.shadowColor='#e8793f';ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ requestAnimationFrame(draw);
 }
-window.addEventListener('resize',resize);
-
-const clock=new THREE.Clock();
-function animate(){
-  const t=clock.getElapsedTime();
-  currentX += (targetX-currentX)*.035;
-  currentY += (targetY-currentY)*.035;
-  world.rotation.y = currentX*.28 + Math.sin(t*.08)*.025;
-  world.rotation.x = currentY*.08;
-  camera.position.x += (currentX*1.15-camera.position.x)*.025;
-  camera.position.y += ((2.8-currentY*.5)-camera.position.y)*.025;
-  camera.lookAt(0,-.45,-1.8);
-  ring.rotation.z=t*.35;
-  ring.scale.setScalar(1+Math.sin(t*2)*.08);
-  pin.scale.setScalar(1+Math.sin(t*3)*.18);
-  river.position.y=-1.28+Math.sin(t*.7)*.012;
-  renderer.render(scene,camera);
-  requestAnimationFrame(animate);
-}
-resize();
-animate();
+function pointer(x,y){const r=mount.getBoundingClientRect();tx=(x-r.left-r.width/2)/r.width*2;ty=(y-r.top-r.height/2)/r.height*2}
+mount.addEventListener('pointermove',e=>{pointer(e.clientX,e.clientY);if(drag){tx+=(e.clientX-lastX)*.003;ty+=(e.clientY-lastY)*.002;lastX=e.clientX;lastY=e.clientY}});
+mount.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;mount.setPointerCapture(e.pointerId)});
+mount.addEventListener('pointerup',()=>drag=false);mount.addEventListener('pointercancel',()=>drag=false);
+window.addEventListener('resize',resize);resize();draw();
+})();
