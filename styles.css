@@ -251,3 +251,6 @@ body.page-leaving{opacity:0}
  .atlas-bottom{align-items:flex-start;flex-direction:column}
  .atlas-bottom span{text-align:left}
 }
+
+.journey-price{display:inline-block;color:#e8793f;font:700 9px Manrope;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+@media(max-width:560px){.journey-price{font-size:8px}}
