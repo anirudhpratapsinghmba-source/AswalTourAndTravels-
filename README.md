@@ -1,1 +1,1 @@
-# Aswal Tour & Travels\n\nPremium travel website for curated India holidays, spiritual journeys, adventure escapes and custom itineraries.\n\n## Run\nOpen index.html directly or serve the folder with any static web server.\n\n## Notes\nPackage prices and contact details shown in the first build are reference/sample content and should be verified before production launch.\n
+# Aswal Tour & Travels\n\nPremium travel website for curated India holidays, spiritual journeys, adventure escapes and custom itineraries
