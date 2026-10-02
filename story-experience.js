@@ -87,13 +87,33 @@
     destination && gsap.fromTo(destination,{scale:.78},{scale:1,duration:.5,ease:'back.out(1.8)'});
   }
 
+  let wheelLocked=false;
   function jumpToScene(index){
     index=Math.max(0,Math.min(scenes.length-1,index));
+    if(index===active && index!==0) return;
+    // Change the copy immediately; the scroll motion follows it.
+    setCopy(index,true);
     const top=root.getBoundingClientRect().top+window.scrollY;
     const max=Math.max(1,root.offsetHeight-window.innerHeight);
     const target=top+max*(index/(scenes.length-1));
     window.scrollTo({top:target,behavior:reduceMotion?'auto':'smooth'});
   }
+
+  // Desktop: one deliberate wheel gesture advances exactly one city.
+  // Trackpad bursts are throttled so a single swipe cannot skip chapters.
+  stage?.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaY)<18 || wheelLocked) return;
+    const r=root.getBoundingClientRect();
+    const inStory=r.top<innerHeight*0.35 && r.bottom>innerHeight*0.65;
+    if(!inStory) return;
+    const direction=e.deltaY>0?1:-1;
+    const target=Math.max(0,Math.min(scenes.length-1,active+direction));
+    if(target===active) return;
+    e.preventDefault();
+    wheelLocked=true;
+    jumpToScene(target);
+    window.setTimeout(()=>{wheelLocked=false;},700);
+  },{passive:false});
 
   prev?.addEventListener('click',()=>jumpToScene(active-1));
   next?.addEventListener('click',()=>jumpToScene(active+1));
@@ -105,7 +125,7 @@
     const max=Math.max(1,root.offsetHeight-window.innerHeight);
     const p=Math.max(0,Math.min(1,-r.top/max));
     const scaled=p*(scenes.length-1);
-    const scene=Math.min(scenes.length-1,Math.floor(scaled+1e-5));
+    const scene=Math.min(scenes.length-1,Math.round(scaled));
     progress.style.transform='scaleX('+p+')';
     if(route) route.style.strokeDashoffset=String(1400*(1-p));
     if(scene!==active) setCopy(scene,true);
