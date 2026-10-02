@@ -129,7 +129,6 @@
         start:'top top',
         end:'bottom bottom',
         scrub:0.8,
-        pin:stage,
         anticipatePin:1,
         invalidateOnRefresh:true,
         onUpdate:self=>{
@@ -170,7 +169,7 @@
     detailStyle.textContent='.story-detail-pop{position:fixed;z-index:300;right:5vw;top:50%;width:min(330px,82vw);padding:25px;background:rgba(4,13,20,.88);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(22px);color:#fff;transform:translateY(-50%);box-shadow:0 25px 80px rgba(0,0,0,.4)}.story-detail-pop span{font:800 8px Manrope;letter-spacing:.2em;color:#e8793f}.story-detail-pop strong{display:block;font:800 30px Manrope;margin:12px 0}.story-detail-pop p{font:12px/1.7 "DM Sans";color:#c5d0d5}.story-detail-pop button{border:0;border-radius:99px;padding:9px 14px;font:800 9px Manrope;cursor:pointer}.story-detail-pop button{margin-top:6px}';
     document.head.appendChild(detailStyle);
     document.body.appendChild(detail);
-    gsap?.fromTo(detail,{autoAlpha:0,x:25},{autoAlpha:1,x:0,duration:.45,ease:'power3.out'});
+    window.gsap?.fromTo(detail,{autoAlpha:0,x:25},{autoAlpha:1,x:0,duration:.45,ease:'power3.out'});
     detail.querySelector('button').addEventListener('click',()=>{detail.remove();detailStyle.remove()});
   });
 })();
