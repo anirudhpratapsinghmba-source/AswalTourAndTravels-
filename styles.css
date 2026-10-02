@@ -128,3 +128,53 @@ footer a:hover{transform:translateX(5px);color:#fff}
   .motion-section,.hero-media,.hero-content,.tilt-card,.destination img,.pkg-img img,.manifesto-image,.theme-card:before{transition:none!important;transform:none!important}
   .marquee div,.trip-planner:before,.quote-section:before,.quote-section:after,.cta:before{animation:none!important}
 }
+
+/* FINAL CINEMATIC MOTION PASS */
+:root{--hero-scroll:0}
+body{opacity:1;transition:opacity .26s ease}
+body.page-leaving{opacity:0}
+.hero{--hero-scroll:0}
+.hero-media{transform:translate3d(var(--hero-x),calc(var(--hero-y) + var(--hero-scroll) * 26px),0) scale(calc(1.07 + var(--hero-scroll) * .045));will-change:transform}
+.hero-content{transform:translate3d(calc(var(--hero-x) * -.18),calc(var(--hero-y) * -.12 - var(--hero-scroll) * 45px),0);opacity:calc(1 - var(--hero-scroll) * .72);will-change:transform,opacity}
+.hero-note,.hero-stats{transition:opacity .25s ease;opacity:calc(1 - var(--hero-scroll) * 1.2)}
+.immersive3d.motion-section{transform:translate3d(0,90px,0) scale(.96);clip-path:inset(8% 4% 8% 4% round 34px)}
+.immersive3d.motion-section.in{transform:none;clip-path:inset(0 round 0)}
+.motion-section{will-change:transform,opacity;transform-origin:center top}
+.motion-section.in{transform:none}
+.section .section-head h2,.process .section-head h2{transition:transform 1.1s cubic-bezier(.16,1,.3,1);transform:translateX(-22px)}
+.section.in .section-head h2,.process.in .section-head h2{transform:none}
+.theme-grid{perspective:1200px}
+.theme-card,.destination,.package{backface-visibility:hidden}
+.theme-card:after,.destination:after{transition:background .7s ease}
+.theme-card:hover:after,.destination:hover:after{background:linear-gradient(135deg,rgba(255,255,255,.16),transparent 34%),linear-gradient(0deg,#06111df0,transparent 72%)}
+.destination-grid{perspective:1400px}
+.destination.featured{transform-origin:center center}
+.destination img,.pkg-img img,.manifesto-image{transform:translate3d(0,var(--parallax-y),0) scale(1.06);will-change:transform}
+.theme-card:before{transform:translate3d(0,var(--parallax-y),0) scale(1.04);will-change:transform}
+.package{position:relative;overflow:hidden}
+.package:before{content:"";position:absolute;left:0;top:0;width:0;height:1px;background:var(--accent);transition:width 1s cubic-bezier(.16,1,.3,1)}
+.package.in:before{width:100%}
+.package .pkg-main h3{transition:letter-spacing .6s ease,transform .6s cubic-bezier(.16,1,.3,1)}
+.package:hover .pkg-main h3{letter-spacing:-.07em;transform:translateX(7px)}
+.manifesto-image{transition:transform 1.4s cubic-bezier(.16,1,.3,1);will-change:transform}
+.manifesto:hover .manifesto-image{transform:translate3d(0,var(--parallax-y),0) scale(1.09)}
+.process{overflow:hidden}
+.steps>div{position:relative}
+.steps>div:before{content:"";position:absolute;left:0;top:0;width:0;height:100%;background:linear-gradient(90deg,rgba(232,121,63,.08),transparent);transition:width .7s ease}
+.steps>div:hover:before{width:100%}
+.quote-section blockquote{transform:translateY(30px);opacity:.2;transition:transform 1.2s cubic-bezier(.16,1,.3,1),opacity 1.2s ease}
+.quote-section.in blockquote{transform:none;opacity:1}
+.quote-mark{animation:quoteFloat 4s ease-in-out infinite}
+.cta h2{transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.cta:hover h2{transform:translateX(10px)}
+@keyframes quoteFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@media(max-width:900px){
+  .immersive3d.motion-section{transform:translate3d(0,50px,0) scale(.985);clip-path:inset(4% 2% round 24px)}
+  .hero-media{transform:scale(1.05)}
+  .hero-content{transform:none;opacity:1}
+  .hero-note,.hero-stats{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  body{transition:none}
+  .hero-media,.hero-content,.motion-section,.immersive3d.motion-section,.quote-section blockquote{transform:none!important;opacity:1!important;clip-path:none!important}
+}
