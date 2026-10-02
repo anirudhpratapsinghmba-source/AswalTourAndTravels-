@@ -2,7 +2,7 @@
    ASWAL STORY EXPERIENCE
    Scroll-driven storytelling system: GSAP + ScrollTrigger + Lenis
    ========================================================= */
-.story-experience{height:540vh;position:relative;background:#050b10;color:#fff;overflow:visible}
+.story-experience{height:600vh;position:relative;background:#050b10;color:#fff;overflow:visible}
 .story-stage{position:sticky;top:0;width:100%;height:100svh;min-height:680px;overflow:hidden;isolation:isolate;background:#07131f;cursor:none}
 .story-media,.story-gradient,.story-noise{position:absolute;inset:0}
 .story-media{z-index:0;transform:scale(1.04)}
@@ -37,7 +37,7 @@
 .story-destination-label strong{font:500 8px Manrope;letter-spacing:.12em;color:#fff8}
 .story-side-note{position:absolute;z-index:6;right:5vw;top:48%;display:flex;flex-direction:column;gap:20px;align-items:flex-end;writing-mode:vertical-rl;color:#fff9;font:800 8px Manrope;letter-spacing:.2em;pointer-events:none}
 .story-side-note b{color:#fff5;font-size:7px}
-.story-bottom{position:absolute;z-index:8;left:7vw;right:5vw;bottom:5vh}
+.story-bottom{position:absolute;z-index:8;left:7vw;right:5vw;bottom:5vh}.story-price-note{margin-top:10px;font:500 7px/1.5 Manrope;letter-spacing:.08em;color:#fff7;text-transform:uppercase}
 .story-progress{height:1px;background:#ffffff33;width:100%;overflow:hidden;margin-bottom:22px}
 .story-progress span{display:block;height:100%;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
 .story-rail{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid #ffffff28}
@@ -46,7 +46,7 @@
 .story-tab:hover,.story-tab.is-active{opacity:1;transform:translateY(-3px)}
 .story-tab span{display:block;font:800 8px Manrope;letter-spacing:.18em;color:var(--accent);margin-bottom:8px}
 .story-tab b{display:block;font:800 13px Manrope}
-.story-tab small{display:block;margin-top:4px;color:#fff8;font-size:9px}
+.story-tab small{display:block;margin-top:4px;color:#fff8;font-size:9px;white-space:nowrap}
 .story-cursor{position:fixed;z-index:200;left:0;top:0;width:74px;height:74px;border:1px solid #ffffff70;border-radius:50%;display:grid;place-items:center;pointer-events:none;opacity:0;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:opacity .2s,transform .12s}
 .story-cursor span{font:800 7px Manrope;letter-spacing:.16em}
 .story-stage:hover .story-cursor{opacity:1}
@@ -54,7 +54,7 @@
 .story-hint span{font-size:14px;margin-left:8px}
 @keyframes storyPulse{0%,100%{transform:scale(.8);opacity:.45}50%{transform:scale(1.25);opacity:1}}
 @media(max-width:900px){
- .story-experience{height:620vh}
+ .story-experience{height:640vh}
  .story-stage{min-height:620px;cursor:auto}
  .story-copy{left:7vw;width:78vw;top:47%}
  .story-copy h2{font-size:clamp(48px,13vw,82px)}
@@ -64,14 +64,14 @@
  .story-route{opacity:.55}
  .story-orbit-a{width:72vw;height:72vw;right:-30vw;top:12vh}
  .story-orbit-b{width:36vw;height:36vw;right:4vw;top:25vh}
- .story-bottom{left:6vw;right:6vw;bottom:4vh}
+ .story-bottom{left:6vw;right:6vw;bottom:4vh}.story-price-note{font-size:6px}
  .story-rail{overflow:hidden}
  .story-tab{min-width:120px;padding-right:12px}
  .story-tab b{font-size:11px}
  .story-hint{display:none}
 }
 @media(max-width:560px){
- .story-experience{height:680vh}
+ .story-experience{height:660vh}
  .story-top{top:20px;left:6vw;right:6vw}
  .story-copy{top:43%;width:86vw}
  .story-copy h2{margin:12px 0 18px}
