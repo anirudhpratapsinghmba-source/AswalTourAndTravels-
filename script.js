@@ -1,20 +1,25 @@
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nav = $('#nav');
   const progress = $('#progress');
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let scrollY = window.scrollY;
-  let targetScrollY = scrollY;
-  let ticking = false;
 
-  // Navigation + global scroll state.
+  // Global scroll state.
+  let ticking = false;
   const updateScroll = () => {
-    scrollY = window.scrollY;
-    if (nav) nav.classList.toggle('scrolled', scrollY > 40);
+    const y = scrollY;
     const max = document.documentElement.scrollHeight - innerHeight;
-    if (progress) progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
-    document.documentElement.style.setProperty('--scroll-y', scrollY + 'px');
+    if (nav) nav.classList.toggle('scrolled', y > 40);
+    if (progress) progress.style.width = (max > 0 ? y / max * 100 : 0) + '%';
+    document.documentElement.style.setProperty('--scroll-y', y + 'px');
+
+    // Hero becomes a cinematic opening frame as it leaves the viewport.
+    const hero = $('.hero');
+    if (hero && !reduceMotion) {
+      const p = Math.min(1, Math.max(0, y / Math.max(1, innerHeight * .85)));
+      hero.style.setProperty('--hero-scroll', p.toFixed(3));
+    }
     ticking = false;
   };
   addEventListener('scroll', () => {
@@ -25,45 +30,50 @@
   }, { passive: true });
   updateScroll();
 
-  // Reveal every major block with a staggered entrance.
+  // Section entrance choreography.
   const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        revealObserver.unobserve(entry.target);
-      }
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -70px 0px' });
+  }, { threshold: .06, rootMargin: '0px 0px -55px 0px' });
 
-  $$('.reveal, .motion-reveal, .section, .trip-planner, .marquee, .manifesto, .process, .quote-section, .cta, footer, .inner-hero, .plan-wrap, .contact-strip').forEach((el, i) => {
+  $$('.reveal, .motion-reveal, .section, .trip-planner, .marquee, .manifesto, .process, .quote-section, .cta, footer, .inner-hero, .plan-wrap, .contact-strip, .immersive3d').forEach((el, i) => {
     if (!el.classList.contains('reveal') && !el.classList.contains('motion-reveal') && !el.classList.contains('hero')) {
       el.classList.add('motion-section');
     }
-    el.style.setProperty('--delay', Math.min(i % 7, 6) * 65 + 'ms');
+    el.style.setProperty('--delay', Math.min(i % 8, 7) * 70 + 'ms');
     revealObserver.observe(el);
   });
 
-  // Automatic parallax layers. The effect is intentionally subtle so content stays readable.
+  // Scroll parallax — only real DOM elements, never pseudo-elements.
   const parallaxItems = [
     ...$$('.hero-media, .inner-hero-bg'),
-    ...$$('.destination img, .pkg-img img, .manifesto-image, .theme-card:before')
+    ...$$('.destination img, .pkg-img img, .manifesto-image'),
+    ...$$('.theme-card')
   ];
   const parallaxTick = () => {
-    const vh = innerHeight;
-    parallaxItems.forEach(el => {
-      const rect = el.parentElement.getBoundingClientRect();
-      if (rect.bottom < -100 || rect.top > vh + 100) return;
-      const center = (rect.top + rect.height / 2 - vh / 2) / vh;
-      const speed = el.classList.contains('hero-media') || el.classList.contains('inner-hero-bg') ? -18 : -10;
-      el.style.setProperty('--parallax-y', (center * speed).toFixed(2) + 'px');
-    });
+    if (!reduceMotion) {
+      const vh = innerHeight;
+      parallaxItems.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom < -120 || rect.top > vh + 120) return;
+        const center = (rect.top + rect.height / 2 - vh / 2) / vh;
+        const value = center * -18;
+        if (el.classList.contains('theme-card')) {
+          el.style.setProperty('--parallax-y', value.toFixed(2) + 'px');
+        } else {
+          el.style.setProperty('--parallax-y', value.toFixed(2) + 'px');
+        }
+      });
+    }
     requestAnimationFrame(parallaxTick);
   };
-  if (!reduceMotion) requestAnimationFrame(parallaxTick);
+  requestAnimationFrame(parallaxTick);
 
-  // 3D card tilt on desktop.
-  const tiltCards = $$('.theme-card, .destination, .package, .steps > div');
-  tiltCards.forEach(card => {
+  // Desktop 3D tilt.
+  $$('.theme-card, .destination, .package, .steps > div').forEach(card => {
     card.classList.add('tilt-card');
     card.addEventListener('pointermove', e => {
       if (innerWidth < 901 || reduceMotion) return;
@@ -93,12 +103,10 @@
       const y = e.clientY - r.top - r.height / 2;
       button.style.transform = 'translate3d(' + x * .10 + 'px,' + y * .10 + 'px,0)';
     });
-    button.addEventListener('pointerleave', () => {
-      button.style.transform = '';
-    });
+    button.addEventListener('pointerleave', () => button.style.transform = '');
   });
 
-  // Hero mouse movement creates a cinematic camera feel.
+  // Hero camera movement.
   const hero = $('.hero');
   if (hero && !reduceMotion) {
     hero.addEventListener('pointermove', e => {
@@ -114,16 +122,15 @@
     });
   }
 
-  // Scroll-driven number/line movement in the process section.
+  // Interactive process timeline.
   $$('.steps').forEach(steps => {
     steps.addEventListener('pointermove', e => {
       const r = steps.getBoundingClientRect();
-      const p = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-      steps.style.setProperty('--process-p', p);
+      steps.style.setProperty('--process-p', Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)));
     });
   });
 
-  // Trip planner.
+  // Trip planner feedback.
   const tripForm = $('#tripForm');
   if (tripForm) {
     tripForm.addEventListener('submit', e => {
@@ -140,7 +147,18 @@
     });
   }
 
-  // Mobile menu works on every page.
+  // Premium page-to-page fade.
+  $$('a[href$=".html"], a[href^="http"]').forEach(a => {
+    if (a.target === '_blank' || a.origin !== location.origin || a.getAttribute('href')?.startsWith('#')) return;
+    a.addEventListener('click', e => {
+      if (reduceMotion) return;
+      e.preventDefault();
+      document.body.classList.add('page-leaving');
+      setTimeout(() => location.href = a.href, 260);
+    });
+  });
+
+  // Mobile menu.
   const menuButton = $('#menu');
   if (menuButton && !$('#mobileMenu')) {
     const panel = document.createElement('div');
@@ -158,7 +176,6 @@
         <a class="mobile-plan" href="plan.html">Plan My Trip <span>↗</span></a>
       </div>`;
     document.body.appendChild(panel);
-
     const close = () => {
       panel.classList.remove('open');
       menuButton.classList.remove('active');
@@ -174,14 +191,13 @@
     $$('a', panel).forEach(a => a.addEventListener('click', close));
   }
 
-  // Smooth same-page anchors.
+  // Same-page smooth links.
   $$('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = $(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-      }
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     });
   });
 })();
