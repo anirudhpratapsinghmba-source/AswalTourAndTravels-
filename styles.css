@@ -26,3 +26,41 @@
 body.menu-open{overflow:hidden}
 @media(min-width:901px){.mobile-menu{display:none!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Immersive WebGL travel experience */
+.immersive3d{position:relative;min-height:860px;background:#050b12;color:#fff;overflow:hidden;display:grid;grid-template-columns:42% 58%;align-items:stretch}
+.immersive3d-copy{position:relative;z-index:3;padding:120px 6vw 100px 8vw;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(90deg,#050b12 72%,transparent)}
+.immersive3d-copy h2{font:800 clamp(58px,7vw,105px)/.82 Manrope;letter-spacing:-.075em;margin:18px 0 28px}
+.immersive3d-copy h2 em{font:400 .92em Georgia}
+.immersive3d-copy p{max-width:390px;color:#91a0ab;font-size:14px;line-height:1.8;margin:0 0 34px}
+.immersive3d-copy .button{width:max-content}
+.immersive3d-stage{position:relative;min-height:860px;overflow:hidden;cursor:grab;touch-action:none;background:radial-gradient(circle at 65% 42%,#17344c 0,#07131f 48%,#03070c 100%)}
+.immersive3d-stage:active{cursor:grabbing}
+.immersive3d-stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
+.webgl-badge{position:absolute;z-index:4;top:34px;right:34px;border:1px solid #ffffff22;background:#06111d99;backdrop-filter:blur(12px);padding:10px 13px;border-radius:99px;font:700 8px Manrope;letter-spacing:.18em;color:#d9e3e8;pointer-events:none}
+.webgl-badge span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#72e0a1;margin-right:7px;box-shadow:0 0 12px #72e0a1}
+.scene-label{position:absolute;z-index:4;color:#fff;pointer-events:none;font:700 8px Manrope;letter-spacing:.2em;opacity:.55;white-space:nowrap}
+.scene-label:before{content:"";display:inline-block;width:32px;height:1px;background:#ffffff55;vertical-align:middle;margin-right:9px}
+.scene-label-a{left:18%;top:31%}
+.scene-label-b{right:12%;top:54%}
+.scene-label-c{left:48%;bottom:17%;opacity:.3}
+.immersive3d-scroll{position:absolute;z-index:5;bottom:35px;left:8vw;font:700 8px Manrope;letter-spacing:.2em;color:#71808b;pointer-events:none}
+.immersive3d-scroll span{color:#fff;margin-left:10px}
+@media(max-width:900px){
+  .immersive3d{display:block;min-height:920px}
+  .immersive3d-copy{padding:90px 7vw 45px;background:linear-gradient(180deg,#050b12 70%,transparent)}
+  .immersive3d-copy h2{font-size:58px}
+  .immersive3d-stage{min-height:560px;margin-top:-40px}
+  .webgl-badge{top:18px;right:18px}
+  .scene-label-a{left:10%;top:22%}.scene-label-b{right:7%;top:57%}
+  .immersive3d-scroll{left:7vw;bottom:22px}
+}
+@media(max-width:560px){
+  .immersive3d{min-height:850px}
+  .immersive3d-copy{padding:78px 7vw 25px}
+  .immersive3d-copy h2{font-size:50px}
+  .immersive3d-copy p{font-size:13px}
+  .immersive3d-stage{min-height:520px;margin-top:-20px}
+  .scene-label{font-size:7px}
+  .scene-label-c{display:none}
+}
