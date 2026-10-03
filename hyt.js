@@ -1,0 +1,10 @@
+(()=>{const q=s=>document.querySelector(s);const nav=q('#hytNav');addEventListener('scroll',()=>nav?.classList.toggle('scrolled',scrollY>40),{passive:true});
+const rates={sedan:15,suv:19,innova:23,crysta:27,'9':32,'12':35,'16':38,'17':40,'20':44};
+const km={kedarnath:410,badrinath:325,yamunotri:230,gangotri:290,vrindavan:250,delhi:220,ayodhya:550,varanasi:700,jaipur:600};
+const names={kedarnath:'Kedarnath',badrinath:'Badrinath',yamunotri:'Yamunotri',gangotri:'Gangotri',vrindavan:'Vrindavan',delhi:'Delhi',ayodhya:'Ayodhya',varanasi:'Varanasi',jaipur:'Jaipur'};
+const fare=()=>{const d=q('#hytDest')?.value,v=q('#hytVehicle')?.value,p=+q('#hytPassengers')?.value||1,ret=q('#hytReturn')?.value==='round';let distance=km[d]||400;if(ret)distance*=2;let base=distance*(rates[v]||35),driver=ret?3500:2200,toll=Math.round(distance*.65/10)*10,parking=700,total=Math.round((base+driver+toll+parking)/500)*500; q('#hytRouteTitle').textContent='Haridwar → '+(names[d]||'Your Destination')+(ret?' → Haridwar':'');q('#hytDays').textContent=ret?'4–6 Days':'2–4 Days';q('#hytKm').textContent=distance+' km';q('#hytVehicleText').textContent=v==='sedan'?'Sedan':v==='suv'?'SUV':v==='innova'?'Innova':v==='crysta'?'Innova Crysta':v+' Seater Traveller';q('#hytFare').textContent='₹'+total.toLocaleString('en-IN');q('#hytFareInput').value=total};
+['hytDest','hytVehicle','hytPassengers','hytReturn'].forEach(id=>q('#'+id)?.addEventListener('change',fare));fare();
+q('#hytFareForm')?.addEventListener('submit',e=>{e.preventDefault();fare();q('#hytResult')?.scrollIntoView({behavior:'smooth',block:'center'})});
+q('#hytBook')?.addEventListener('click',()=>{const msg='Hi Haridwar Yatra Traveller, I want to book: '+q('#hytRouteTitle').textContent+'. Vehicle: '+q('#hytVehicleText').textContent+'. Estimated fare: '+q('#hytFare').textContent+'. Passengers: '+q('#hytPassengers').value+'. Please confirm availability.';window.open('https://wa.me/917983558954?text='+encodeURIComponent(msg),'_blank')});
+q('#hytSearch')?.addEventListener('click',()=>{q('#hytPlanner').scrollIntoView({behavior:'smooth'})});
+})();
