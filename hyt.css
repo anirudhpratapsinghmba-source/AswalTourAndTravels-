@@ -1,6 +1,6 @@
 /* Haridwar Yatra Traveller — customer experience */
 :root{--hyt-ink:#07131f;--hyt-paper:#f7f4ed;--hyt-accent:#d96b2b;--hyt-saffron:#ef8b3a;--hyt-line:#07131f1a;--hyt-green:#176b54}
-.hyt{font-family:"DM Sans",sans-serif;background:var(--hyt-paper);color:var(--hyt-ink);overflow:hidden}.hyt *{box-sizing:border-box}.hyt a{text-decoration:none;color:inherit}
+.hyt{font-family:"DM Sans",sans-serif;background:var(--hyt-paper);color:var(--hyt-ink);overflow-x:hidden;overflow-y:auto}.hyt *{box-sizing:border-box}.hyt a{text-decoration:none;color:inherit}
 .hyt-nav{position:fixed;z-index:100;top:0;left:0;right:0;padding:18px 5vw;display:flex;align-items:center;justify-content:space-between;color:#fff;transition:.4s;background:linear-gradient(#07131f9c,transparent)}
 .hyt-nav.scrolled{background:#07131fee;backdrop-filter:blur(18px);padding-block:13px}
 .hyt-brand{display:flex;align-items:center;gap:11px;font:800 12px Manrope;letter-spacing:.08em}.hyt-brand-mark{width:38px;height:38px;border:1px solid #ffffff55;border-radius:12px;display:grid;place-items:center;font:900 17px Georgia;background:#ffffff12}
