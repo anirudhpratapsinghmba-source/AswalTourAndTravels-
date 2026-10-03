@@ -14,7 +14,7 @@ Deno.serve(async req=>{
   if(action==="autocomplete"){
    const input=String(body?.input||"").trim();
    if(input.length<2)return json({suggestions:[]});
-   const response=await fetch("https://places.googleapis.com/v1/places:autocomplete",{method:"POST",headers:{"Content-Type":"application/json","X-Goog-Api-Key":apiKey,"X-Goog-FieldMask":"suggestions.placePrediction.placeId,suggestions.placePrediction.text,suggestions.placePrediction.structuredFormat,suggestions.placePrediction.types"},body:JSON.stringify({input,includedRegionCodes:["in"],sessionToken:String(body?.sessionToken||crypto.randomUUID())})});
+   const response=await fetch("https://places.googleapis.com/v1/places:autocomplete",{method:"POST",headers:{"Content-Type":"application/json","X-Goog-Api-Key":apiKey,"X-Goog-FieldMask":"suggestions.placePrediction.placeId,suggestions.placePrediction.text.text,suggestions.placePrediction.structuredFormat.mainText.text,suggestions.placePrediction.structuredFormat.secondaryText.text,suggestions.placePrediction.types"},body:JSON.stringify({input,includedRegionCodes:["in"],sessionToken:String(body?.sessionToken||crypto.randomUUID())})});
    const data=await response.json();if(!response.ok)return json({error:data?.error?.message||"Places autocomplete failed."},response.status);return json({suggestions:data.suggestions||[]});
   }
   if(action==="details"){
