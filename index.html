@@ -11,6 +11,7 @@
 <button class="hyt-btn" type="submit">Get Fare</button>
 <div class="hyt-route-status" id="hytRouteStatus" aria-live="polite"></div></form></section>
 
+<button class="aswal-book-float" id="aswalFloatBook" type="button" aria-label="Plan your journey"><span aria-hidden="true">✦</span><b>Plan Journey</b></button>
 <div class="aswal-booking-modal" id="aswalBookingModal" aria-hidden="true">
   <div class="aswal-booking-backdrop" data-aswal-close></div>
   <div class="aswal-booking-dialog" role="dialog" aria-modal="true" aria-labelledby="aswalBookingTitle">
@@ -44,7 +45,7 @@
   const modal=document.getElementById('aswalBookingModal');
   const form=document.getElementById('hytFareForm');
   const slot=document.getElementById('aswalBookingFormSlot');
-  const openers=[document.getElementById('aswalOpenBooking'),document.getElementById('aswalNavBook')].filter(Boolean);
+  const openers=[document.getElementById('aswalOpenBooking'),document.getElementById('aswalNavBook'),document.getElementById('aswalFloatBook')].filter(Boolean);
   const closeBtn=document.getElementById('aswalCloseBooking');
   const note=document.getElementById('aswalModalRouteNote');
   const open=()=>{if(!modal)return; modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.classList.add('aswal-modal-open');setTimeout(()=>document.getElementById('hytDestInput')?.focus(),180)};
