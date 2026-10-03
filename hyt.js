@@ -80,7 +80,6 @@ Please confirm availability and final fare.`;q('#hytBookingNote')&&(q('#hytBooki
 q('#hytMenu')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
 const wa=document.createElement('a');wa.className='hyt-wa-float';wa.href='https://wa.me/917983558954?text='+encodeURIComponent('Hi Aswal Tour & Travels, I have a travel query.');wa.target='_blank';wa.rel='noopener noreferrer';wa.setAttribute('aria-label','WhatsApp Aswal Tour & Travels');wa.innerHTML='<span aria-hidden="true">💬</span><b>WhatsApp</b>';document.body.appendChild(wa);
 document.head.insertAdjacentHTML('beforeend','<style>.hyt-wa-float{position:fixed;right:22px;bottom:22px;z-index:9999;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#25D366;color:#062015;box-shadow:0 14px 35px #0004;border:3px solid #fff;text-decoration:none;transition:.3s}.hyt-wa-float:hover{transform:translateY(-5px) scale(1.05)}.hyt-wa-float b{position:absolute;right:62px;white-space:nowrap;background:#07131f;color:#fff;padding:8px 11px;border-radius:999px;font:800 9px Manrope;opacity:0;transform:translateX(8px);transition:.3s}.hyt-wa-float:hover b{opacity:1;transform:none}@media(max-width:560px){.hyt-wa-float{right:14px;bottom:14px;width:48px;height:48px}}</style>');
-})();
 // ASWAL JOURNEY NAVIGATOR
 const aswalSections=[...document.querySelectorAll('.hyt-hero,#services,#planner,#destinations,#pages,#trust,#contact,#booking')];
 const aswalNames=['HOME','SERVICES','PLAN MY TRIP','DESTINATIONS','ALL PAGES','WHY ASWAL','CONTACT','BOOKING'];
