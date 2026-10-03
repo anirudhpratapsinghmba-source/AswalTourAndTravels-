@@ -158,6 +158,18 @@
     });
   });
 
+  // Ensure a real mobile menu trigger exists on every legacy page.
+  const legacyNav = $('.nav');
+  if (legacyNav && !$('#menu')) {
+    const trigger = document.createElement('button');
+    trigger.id = 'menu';
+    trigger.className = 'menu';
+    trigger.type = 'button';
+    trigger.setAttribute('aria-label', 'Open navigation');
+    trigger.innerHTML = '<i></i><i></i>';
+    legacyNav.appendChild(trigger);
+  }
+
   // Mobile menu.
   const menuButton = $('#menu');
   if (menuButton && !$('#mobileMenu')) {
@@ -252,7 +264,7 @@
       wa.target = '_blank';
       wa.rel = 'noopener noreferrer';
       wa.setAttribute('aria-label', 'WhatsApp Aswal Tour and Travels for a travel query');
-      wa.innerHTML = '<span class="aswal-whatsapp-icon" aria-hidden="true">⌕</span><span>WhatsApp for Query</span><i class="aswal-whatsapp-dot" aria-hidden="true"></i>';
+      wa.innerHTML = '<span class="aswal-whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.1 1.6 5.9L.2 24l6.5-1.7c1.7.9 3.5 1.3 5.4 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.1-3.5-8.3Zm-8.4 18.1h-.1c-1.7 0-3.4-.5-4.9-1.3l-.4-.2-3.9 1 1-3.8-.2-.4a9.8 9.8 0 1 1 8.5 4.7Zm5.4-7.4c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.8-2.8-1.5-3.9-3.4-.3-.5.3-.5.8-1.6.1-.2.1-.4 0-.6l-.9-2.1c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1-1.1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.1 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3Z"/></svg></span><span>WhatsApp for Query</span><i class="aswal-whatsapp-dot" aria-hidden="true"></i>';
       document.body.appendChild(wa);
     }
   })();
