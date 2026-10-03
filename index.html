@@ -23,7 +23,7 @@
     <div class="aswal-booking-form-slot" id="aswalBookingFormSlot"></div>
     <div class="aswal-modal-route-note" id="aswalModalRouteNote" aria-live="polite">Enter your journey details to calculate fare.</div>
     <div class="aswal-modal-actions">
-      <button class="hyt-btn" type="button" id="aswalModalWhatsApp">Continue on WhatsApp ↗</button>
+      <button class="hyt-btn" type="button" id="aswalModalWhatsApp">Continue to Booking Details ↗</button>
     </div>
     <div class="aswal-modal-footer"><span>Secure enquiry</span><span>•</span><span>India-wide routes</span><span>•</span><span>24×7 travel desk</span></div>
   </div>
@@ -53,7 +53,7 @@
   closeBtn?.addEventListener('click',close);
   modal?.querySelector('[data-aswal-close]')?.addEventListener('click',close);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal?.classList.contains('is-open'))close()});
-  if(form&&slot){slot.appendChild(form);}
+  if(form&&slot){slot.appendChild(form);form.classList.remove('aswal-booking-form-hidden');}
   window.ASWAL_BOOKING_MODAL={open,close,setNote:t=>{if(note)note.textContent=t||''}};
   document.querySelectorAll('[data-destination]').forEach(btn=>btn.addEventListener('click',()=>{
     open();
