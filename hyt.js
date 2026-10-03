@@ -10,4 +10,23 @@ q('#hytCustomerForm')?.addEventListener('submit',e=>{e.preventDefault();calculat
 q('#hytMenu')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
 const wa=document.createElement('a');wa.className='hyt-wa-float';wa.href='https://wa.me/917983558954?text='+encodeURIComponent('Hi Aswal Tour & Travels, I have a travel query.');wa.target='_blank';wa.rel='noopener noreferrer';wa.setAttribute('aria-label','WhatsApp Aswal Tour & Travels');wa.innerHTML='<span aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.1 1.6 5.9L.2 24l6.5-1.7c1.7.9 3.5 1.3 5.4 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.1-3.5-8.3Zm-8.4 18.1h-.1c-1.7 0-3.4-.5-4.9-1.3l-.4-.2-3.9 1 1-3.8-.2-.4a9.8 9.8 0 1 1 8.5 4.7Zm5.4-7.4c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.8-2.8-1.5-3.9-3.4-.3-.5.3-.5.8-1.6.1-.2.1-.4 0-.6l-.9-2.1c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1-1.1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.1 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3Z"/></svg></span><b>WhatsApp</b>';
 document.head.insertAdjacentHTML('beforeend','<style>.hyt-wa-float{position:fixed;right:22px;bottom:22px;z-index:9999;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#25D366;color:#062015;box-shadow:0 14px 35px #0004;border:3px solid #fff;text-decoration:none;transition:.3s}.hyt-wa-float:hover{transform:translateY(-5px) scale(1.05)}.hyt-wa-float b{position:absolute;right:62px;white-space:nowrap;background:#07131f;color:#fff;padding:8px 11px;border-radius:999px;font:800 9px Manrope;opacity:0;transform:translateX(8px);transition:.3s}.hyt-wa-float:hover b{opacity:1;transform:none}@media(max-width:560px){.hyt-wa-float{right:14px;bottom:14px;width:48px;height:48px}}</style>');document.body.appendChild(wa);
+
+// ASWAL JOURNEY NAVIGATOR
+const aswalSections=[...document.querySelectorAll('.hyt-hero,#services,#planner,#destinations,#pages,#trust,#contact,#booking')];
+const aswalNames=['HOME','SERVICES','PLAN MY TRIP','DESTINATIONS','ALL PAGES','WHY ASWAL','CONTACT','BOOKING'];
+const aswalRail=document.createElement('div');
+aswalRail.className='aswal-journey-rail';
+aswalRail.innerHTML='<div class="aswal-current">HOME</div><div class="aswal-dots">'+aswalNames.map((n,i)=>'<button type="button" data-i="'+i+'" title="'+n+'"></button>').join('')+'</div>';
+document.body.appendChild(aswalRail);
+const aswalDots=[...aswalRail.querySelectorAll('button')],aswalCurrent=aswalRail.querySelector('.aswal-current');
+function aswalSet(i){aswalCurrent.textContent=aswalNames[i];aswalDots.forEach((d,n)=>d.classList.toggle('active',n===i))}
+aswalDots.forEach((d,i)=>d.onclick=()=>aswalSections[i]?.scrollIntoView({behavior:'smooth',block:'start'}));
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const i=aswalSections.indexOf(e.target);if(i>-1)aswalSet(i)}}),{rootMargin:'-45% 0px -45% 0px'}).observe(aswalSections[0]);
+aswalSections.slice(1).forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)aswalSet(aswalSections.indexOf(e.target))}),{rootMargin:'-45% 0px -45% 0px'}).observe(el));
+const aswalBar=document.createElement('div');aswalBar.className='aswal-scroll-bar';document.body.appendChild(aswalBar);
+addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-innerHeight;aswalBar.style.width=(max?scrollY/max*100:0)+'%'},{passive:true});
+const aswalOverlay=document.createElement('div');aswalOverlay.className='aswal-page-switch';aswalOverlay.innerHTML='<div><small>ASWAL TOUR & TRAVELS</small><strong id="aswalSwitchName">Opening…</strong><span></span></div>';document.body.appendChild(aswalOverlay);
+document.querySelectorAll('a[href$=".html"],a[href*=".html#"]').forEach(a=>a.addEventListener('click',e=>{const href=a.getAttribute('href');if(!href||href.startsWith('index.html'))return;const name=(a.querySelector('h3')?.textContent||a.textContent||href).replace(/\s+/g,' ').trim();document.querySelector('#aswalSwitchName').textContent=name;aswalOverlay.classList.add('show');setTimeout(()=>location.href=href,450)}));
+aswalSet(0);
+
 })();
