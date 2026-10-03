@@ -92,3 +92,12 @@ body.aswal-modal-open{overflow:hidden}
  .aswal-destination-chips{gap:6px}
  .aswal-destination-chips button{padding:7px 10px}
 }
+
+/* Floating journey booking trigger — same family as WhatsApp, no homepage form space */
+.aswal-book-float{position:fixed;right:22px;bottom:88px;z-index:9998;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#07131f;color:#fff;border:3px solid #fff;box-shadow:0 14px 35px #0004;cursor:pointer;transition:.3s}
+.aswal-book-float span{font-size:20px;line-height:1}
+.aswal-book-float b{position:absolute;right:62px;white-space:nowrap;background:#07131f;color:#fff;padding:8px 11px;border-radius:999px;font:800 9px Manrope;letter-spacing:.05em;opacity:0;transform:translateX(8px);pointer-events:none;transition:.3s}
+.aswal-book-float:hover{transform:translateY(-5px) scale(1.05);background:#13283a}
+.aswal-book-float:hover b,.aswal-book-float:focus-visible b{opacity:1;transform:none}
+.aswal-book-float:focus-visible{outline:3px solid #ffb16d;outline-offset:3px}
+@media(max-width:560px){.aswal-book-float{right:14px;bottom:72px;width:48px;height:48px}.aswal-book-float b{display:none}}
