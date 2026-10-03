@@ -23,7 +23,7 @@
   // Preload every chapter image so the first scroll never reveals a blank frame.
   media.forEach(scene=>{
     const raw=scene.style.getPropertyValue('--image').trim();
-    const url=raw.replace(/^url\\((['"]?)(.*)\\1\\)$/,'$2');
+    const url=raw.replace(/^url\(['"]?(.*?)['"]?\)$/,'$1');
     if(url){ const img=new Image(); img.decoding='async'; img.loading='eager'; img.src=url; }
   });
   const kicker=$('#storyKicker'), title=$('#storyTitle'), desc=$('#storyDescription');
