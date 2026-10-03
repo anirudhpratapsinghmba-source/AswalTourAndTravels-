@@ -1,7 +1,7 @@
 <!doctype html><html lang="hi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Aswal Tour & Travels — Haridwar Tempo Traveller, car rental, Char Dham and all India yatra bookings."><title>Aswal Tour & Travels — हर यात्रा की शुरुआत हरिद्वार से</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="hyt.css"></head><body class="hyt">
-<header class="hyt-nav" id="hytNav"><a class="hyt-brand" href="#"><span class="hyt-brand-mark">ॐ</span><span>ASWAL<br>TOUR & TRAVELS</span></a><nav class="hyt-navlinks"><a href="#services">Services</a><a href="destinations.html">Destinations</a><a href="packages.html">Packages</a><a href="experiences.html">Experiences</a><a href="about.html">Why Us</a><a href="#contact">Contact</a><a class="hyt-book" href="#booking">Book Now ↗</a></nav><button class="hyt-mobile" id="hytMenu" type="button" aria-label="Open menu">☰</button></header>
-<section class="hyt-hero"><div class="hyt-hero-inner"><span class="hyt-eyebrow">HARIDWAR · UTTARAKHAND · ALL INDIA</span><h1>हर यात्रा की शुरुआत<br><em>हरिद्वार से।</em></h1><p class="hyt-hero-copy">Haridwar से Char Dham, Kedarnath, Badrinath, Yamunotri, Gangotri, Rishikesh, Delhi, Vrindavan और पूरे भारत की यात्रा के लिए वाहन और yatra package बुक करें।</p><div class="hyt-actions"><a class="hyt-btn" href="#planner">Plan Your Yatra →</a><a class="hyt-btn alt" href="https://wa.me/917983558954" target="_blank">WhatsApp Expert</a></div></div>
-<form class="hyt-booking" id="hytFareForm" autocomplete="off">
+<header class="hyt-nav" id="hytNav"><a class="hyt-brand" href="#"><span class="hyt-brand-mark">ॐ</span><span>ASWAL<br>TOUR & TRAVELS</span></a><nav class="hyt-navlinks"><a href="#services">Services</a><a href="destinations.html">Destinations</a><a href="packages.html">Packages</a><a href="experiences.html">Experiences</a><a href="about.html">Why Us</a><a href="#contact">Contact</a><button class="hyt-book" id="aswalNavBook" type="button">Book Now ↗</button></nav><button class="hyt-mobile" id="hytMenu" type="button" aria-label="Open menu">☰</button></header>
+<section class="hyt-hero"><div class="hyt-hero-inner"><span class="hyt-eyebrow">HARIDWAR · UTTARAKHAND · ALL INDIA</span><h1>Explore India.<br><em>Your journey begins here.</em></h1><p class="hyt-hero-copy">Premium cars, Tempo Travellers and yatra journeys from Haridwar to the Himalayas and across India — planned around your route, group and dates.</p><div class="hyt-actions"><button class="hyt-btn" id="aswalOpenBooking" type="button">Plan My Journey <span>↗</span></button><a class="hyt-btn alt" href="#destinations">Explore Destinations ↓</a></div><div class="aswal-trust-line"><span>✓ Premium Vehicles</span><span>✓ Transparent Fare</span><span>✓ WhatsApp Booking</span></div><div class="aswal-destination-chips" aria-label="Popular destinations"><button type="button" data-destination="Kedarnath">Kedarnath</button><button type="button" data-destination="Badrinath">Badrinath</button><button type="button" data-destination="Rishikesh">Rishikesh</button><button type="button" data-destination="Delhi">Delhi</button><button type="button" data-destination="Agra">Agra</button><button type="button" data-destination="Jaipur">Jaipur</button><button type="button" data-destination="Ayodhya">Ayodhya</button><button type="button" data-destination="Varanasi">Varanasi</button></div></div>
+<form class="hyt-booking aswal-booking-form-hidden" id="hytFareForm" autocomplete="off">
 <div class="hyt-field hyt-autocomplete" data-autocomplete="location"><label for="hytFrom">From</label><div class="hyt-search-shell"><span class="hyt-search-icon" aria-hidden="true">⌖</span><input id="hytFrom" class="hyt-search-input" type="text" value="Haridwar" placeholder="City, airport, landmark…" aria-autocomplete="list" aria-controls="hytFromSuggestions" aria-expanded="false"><div class="hyt-suggestions" id="hytFromSuggestions" role="listbox" aria-label="From suggestions"></div></div></div>
 <div class="hyt-field hyt-autocomplete" data-autocomplete="location"><label for="hytDestInput">To</label><div class="hyt-search-shell"><span class="hyt-search-icon" aria-hidden="true">⌖</span><input id="hytDestInput" class="hyt-search-input" type="text" placeholder="Where are you going?" aria-autocomplete="list" aria-controls="hytToSuggestions" aria-expanded="false"><div class="hyt-suggestions" id="hytToSuggestions" role="listbox" aria-label="To suggestions"></div></div><input id="hytDest" type="hidden" value=""></div>
 <div class="hyt-field"><label for="hytTravelDate">Travel Date</label><input id="hytTravelDate" type="date" required></div>
@@ -10,6 +10,24 @@
 <div class="hyt-field hyt-autocomplete" data-autocomplete="vehicle"><label for="hytVehicleInput">Vehicle</label><div class="hyt-search-shell"><span class="hyt-search-icon" aria-hidden="true">🚐</span><input id="hytVehicleInput" class="hyt-search-input" type="text" value="Force Traveller N 3350WB — 12 Seater" placeholder="Search vehicle…" aria-autocomplete="list" aria-controls="hytVehicleSuggestions" aria-expanded="false"><div class="hyt-suggestions" id="hytVehicleSuggestions" role="listbox" aria-label="Vehicle suggestions"></div></div><input id="hytVehicle" type="hidden" value="force-traveller-12"></div>
 <button class="hyt-btn" type="submit">Get Fare</button>
 <div class="hyt-route-status" id="hytRouteStatus" aria-live="polite"></div></form></section>
+
+<div class="aswal-booking-modal" id="aswalBookingModal" aria-hidden="true">
+  <div class="aswal-booking-backdrop" data-aswal-close></div>
+  <div class="aswal-booking-dialog" role="dialog" aria-modal="true" aria-labelledby="aswalBookingTitle">
+    <button class="aswal-booking-close" type="button" id="aswalCloseBooking" aria-label="Close booking form">×</button>
+    <div class="aswal-booking-head">
+      <span class="hyt-eyebrow">ASWAL TRAVEL DESK</span>
+      <h2 id="aswalBookingTitle">Plan your <em>journey.</em></h2>
+      <p>Tell us where you're going. We'll calculate the route and prepare your booking.</p>
+    </div>
+    <div class="aswal-booking-form-slot" id="aswalBookingFormSlot"></div>
+    <div class="aswal-modal-route-note" id="aswalModalRouteNote" aria-live="polite">Enter your journey details to calculate fare.</div>
+    <div class="aswal-modal-actions">
+      <button class="hyt-btn" type="button" id="aswalModalWhatsApp">Continue on WhatsApp ↗</button>
+    </div>
+    <div class="aswal-modal-footer"><span>Secure enquiry</span><span>•</span><span>India-wide routes</span><span>•</span><span>24×7 travel desk</span></div>
+  </div>
+</div>
 
 <section class="hyt-section" id="services"><div class="hyt-section-head"><div><span class="hyt-eyebrow">ONE TRAVEL DESK</span><h2>Everything you need<br><em>for the road.</em></h2></div><p>Vehicles, yatra planning and destination packages—designed around your group, dates and route.</p></div><div class="hyt-services"><a class="hyt-service" href="tempo-traveller-haridwar.html"><div class="hyt-icon">🚐</div><h3>Tempo Traveller</h3><ul><li>9 Seater</li><li>12 Seater</li><li>16 Seater</li><li>17 Seater</li><li>20 Seater</li><li>Luxury</li></ul></a><a class="hyt-service" href="packages.html"><div class="hyt-icon">🚗</div><h3>Car Rental</h3><ul><li>Sedan</li><li>SUV</li><li>Innova</li><li>Crysta</li><li>Luxury Cars</li></ul></a><a class="hyt-service" href="kedarnath-yatra-package.html"><div class="hyt-icon">🛕</div><h3>Yatra Packages</h3><ul><li>Char Dham</li><li>Do Dham</li><li>Kedarnath</li><li>Badrinath</li><li>Ayodhya</li><li>Varanasi</li><li>Rajasthan</li><li>Himachal</li></ul></a></div></section>
 
@@ -21,4 +39,32 @@
 <section class="hyt-section"><div class="hyt-section-head"><div><span class="hyt-eyebrow">BOOKING FLOW</span><h2>From “let's go”<br><em>to confirmed.</em></h2></div></div><div class="hyt-steps"><div class="hyt-step"><b>01</b><h3>Route</h3><p>Choose where you're going.</p></div><div class="hyt-step"><b>02</b><h3>Vehicle</h3><p>Select the right capacity.</p></div><div class="hyt-step"><b>03</b><h3>Fare</h3><p>See an indicative calculation.</p></div><div class="hyt-step"><b>04</b><h3>Details</h3><p>Share passenger information.</p></div><div class="hyt-step"><b>05</b><h3>Confirm</h3><p>Continue with the travel desk.</p></div></div></section>
 <section class="hyt-cta" id="contact"><span class="hyt-eyebrow">ASWAL TRAVEL DESK</span><h2>Ready for the<br><em>next yatra?</em></h2><a class="hyt-btn" href="https://wa.me/917983558954?text=Hi%20Aswal%20Tour%20%26%20Travels%2C%20I%20want%20to%20plan%20a%20trip." target="_blank">WhatsApp · 79835 58954 ↗</a></section>
 <section class="hyt-section" id="booking"><div class="hyt-section-head"><div><span class="hyt-eyebrow">BOOKING DETAILS</span><h2>Ready to<br><em>confirm?</em></h2></div><p>Enter your contact details. We’ll generate a booking reference and prepare the WhatsApp enquiry.</p></div><form class="hyt-panel" id="hytCustomerForm" style="background:#fff;color:#07131f;max-width:850px;margin:auto"><div class="hyt-form-grid"><div class="hyt-input" style="color:#07131f;border-color:#07131f22;background:#07131f05"><label style="color:#657177">Name</label><input id="hytCustomerName" required placeholder="Your name" style="color:#07131f"></div><div class="hyt-input" style="color:#07131f;border-color:#07131f22;background:#07131f05"><label style="color:#657177">Mobile</label><input id="hytCustomerMobile" required inputmode="numeric" pattern="[0-9]{10}" placeholder="10-digit mobile" style="color:#07131f"></div><div class="hyt-input" style="color:#07131f;border-color:#07131f22;background:#07131f05"><label style="color:#657177">Travel Date</label><input id="hytCustomerDate" type="date" required style="color:#07131f"></div><div class="hyt-input" style="color:#07131f;border-color:#07131f22;background:#07131f05"><label style="color:#657177">Email</label><input id="hytCustomerEmail" type="email" placeholder="Optional" style="color:#07131f"></div><div class="hyt-input" style="color:#07131f;border-color:#07131f22;background:#07131f05"><label style="color:#657177">Notes</label><input id="hytCustomerNotes" placeholder="Pickup / special request" style="color:#07131f"></div></div><button class="hyt-btn" type="submit" style="margin-top:18px">Generate Booking & WhatsApp →</button><p id="hytBookingNote" style="font-size:11px;color:#657177;line-height:1.6;margin:14px 0 0"></p></form></section><footer class="hyt-footer"><div><strong>ASWAL TOUR & TRAVELS</strong><br><br>Haridwar · Uttarakhand<br>Tempo Traveller · Car Rental · Yatra Packages</div><div><strong>POPULAR</strong><br><br><a href="kedarnath-yatra-package.html">Kedarnath</a><br><a href="char-dham-yatra-from-haridwar.html">Char Dham</a><br><a href="badrinath-yatra-package.html">Badrinath</a><br><a href="haridwar-to-mathura.html">Vrindavan</a></div><div><strong>BOOKING</strong><br><br><a href="#planner">Plan Your Yatra</a><br><a href="https://wa.me/917983558954">WhatsApp</a></div></footer>
-<script src="aswal-config.js"></script><script src="hyt.js"></script></body></html>
+<script>
+(function(){
+  const modal=document.getElementById('aswalBookingModal');
+  const form=document.getElementById('hytFareForm');
+  const slot=document.getElementById('aswalBookingFormSlot');
+  const openers=[document.getElementById('aswalOpenBooking'),document.getElementById('aswalNavBook')].filter(Boolean);
+  const closeBtn=document.getElementById('aswalCloseBooking');
+  const note=document.getElementById('aswalModalRouteNote');
+  const open=()=>{if(!modal)return; modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.classList.add('aswal-modal-open');setTimeout(()=>document.getElementById('hytDestInput')?.focus(),180)};
+  const close=()=>{if(!modal)return; modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('aswal-modal-open')};
+  openers.forEach(b=>b.addEventListener('click',open));
+  closeBtn?.addEventListener('click',close);
+  modal?.querySelector('[data-aswal-close]')?.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal?.classList.contains('is-open'))close()});
+  if(form&&slot){slot.appendChild(form);}
+  window.ASWAL_BOOKING_MODAL={open,close,setNote:t=>{if(note)note.textContent=t||''}};
+  document.querySelectorAll('[data-destination]').forEach(btn=>btn.addEventListener('click',()=>{
+    open();
+    const input=document.getElementById('hytDestInput');
+    if(input){
+      input.value=btn.dataset.destination||'';
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+    }
+  }));
+  document.getElementById('aswalModalWhatsApp')?.addEventListener('click',()=>{
+    document.getElementById('hytBook')?.click();
+  });
+})();
+</script><script src="aswal-config.js"></script><script src="hyt.js"></script></body></html>
